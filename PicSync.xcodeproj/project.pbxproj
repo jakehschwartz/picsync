@@ -14,13 +14,17 @@
 		84F7ACA01837026A00BBDF08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AC9F1837026A00BBDF08 /* main.m */; };
 		84F7ACA41837026A00BBDF08 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACA31837026A00BBDF08 /* AppDelegate.m */; };
 		84F7ACA71837026A00BBDF08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACA51837026A00BBDF08 /* Main.storyboard */; };
-		84F7ACAA1837026A00BBDF08 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACA91837026A00BBDF08 /* ViewController.m */; };
+		84F7ACAA1837026A00BBDF08 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACA91837026A00BBDF08 /* StartViewController.m */; };
 		84F7ACAC1837026A00BBDF08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACAB1837026A00BBDF08 /* Images.xcassets */; };
 		84F7ACB31837026A00BBDF08 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7ACB21837026A00BBDF08 /* XCTest.framework */; };
 		84F7ACB41837026A00BBDF08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC931837026A00BBDF08 /* Foundation.framework */; };
 		84F7ACB51837026A00BBDF08 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC971837026A00BBDF08 /* UIKit.framework */; };
 		84F7ACBD1837026A00BBDF08 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACBB1837026A00BBDF08 /* InfoPlist.strings */; };
 		84F7ACBF1837026A00BBDF08 /* PicSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACBE1837026A00BBDF08 /* PicSyncTests.m */; };
+		C0490CB818371CDB00D3C170 /* PictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0490CB718371CDB00D3C170 /* PictureViewController.m */; };
+		C0720CD9183971FC00322959 /* ClientViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CD6183971FC00322959 /* ClientViewController.m */; };
+		C0720CDA183971FC00322959 /* ServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CD8183971FC00322959 /* ServerViewController.m */; };
+		C0720CDE183972C600322959 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CDD183972C600322959 /* AsyncUdpSocket.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,14 +49,22 @@
 		84F7ACA21837026A00BBDF08 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84F7ACA31837026A00BBDF08 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		84F7ACA61837026A00BBDF08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		84F7ACA81837026A00BBDF08 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		84F7ACA91837026A00BBDF08 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		84F7ACA81837026A00BBDF08 /* StartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
+		84F7ACA91837026A00BBDF08 /* StartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
 		84F7ACAB1837026A00BBDF08 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		84F7ACB11837026A00BBDF08 /* PicSyncTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicSyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F7ACB21837026A00BBDF08 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		84F7ACBA1837026A00BBDF08 /* PicSyncTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PicSyncTests-Info.plist"; sourceTree = "<group>"; };
 		84F7ACBC1837026A00BBDF08 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		84F7ACBE1837026A00BBDF08 /* PicSyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicSyncTests.m; sourceTree = "<group>"; };
+		C0490CB618371CDB00D3C170 /* PictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureViewController.h; sourceTree = "<group>"; };
+		C0490CB718371CDB00D3C170 /* PictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureViewController.m; sourceTree = "<group>"; };
+		C0720CD5183971FC00322959 /* ClientViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientViewController.h; sourceTree = "<group>"; };
+		C0720CD6183971FC00322959 /* ClientViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientViewController.m; sourceTree = "<group>"; };
+		C0720CD7183971FC00322959 /* ServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerViewController.h; sourceTree = "<group>"; };
+		C0720CD8183971FC00322959 /* ServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerViewController.m; sourceTree = "<group>"; };
+		C0720CDC183972C600322959 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
+		C0720CDD183972C600322959 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +94,7 @@
 		84F7AC871837026A00BBDF08 = {
 			isa = PBXGroup;
 			children = (
+				C0720CDB183972B200322959 /* SocketHelper */,
 				84F7AC991837026A00BBDF08 /* PicSync */,
 				84F7ACB81837026A00BBDF08 /* PicSyncTests */,
 				84F7AC921837026A00BBDF08 /* Frameworks */,
@@ -114,9 +127,15 @@
 			children = (
 				84F7ACA21837026A00BBDF08 /* AppDelegate.h */,
 				84F7ACA31837026A00BBDF08 /* AppDelegate.m */,
+				C0720CD5183971FC00322959 /* ClientViewController.h */,
+				C0720CD6183971FC00322959 /* ClientViewController.m */,
 				84F7ACA51837026A00BBDF08 /* Main.storyboard */,
-				84F7ACA81837026A00BBDF08 /* ViewController.h */,
-				84F7ACA91837026A00BBDF08 /* ViewController.m */,
+				C0490CB618371CDB00D3C170 /* PictureViewController.h */,
+				C0490CB718371CDB00D3C170 /* PictureViewController.m */,
+				C0720CD7183971FC00322959 /* ServerViewController.h */,
+				C0720CD8183971FC00322959 /* ServerViewController.m */,
+				84F7ACA81837026A00BBDF08 /* StartViewController.h */,
+				84F7ACA91837026A00BBDF08 /* StartViewController.m */,
 				84F7ACAB1837026A00BBDF08 /* Images.xcassets */,
 				84F7AC9A1837026A00BBDF08 /* Supporting Files */,
 			);
@@ -150,6 +169,15 @@
 				84F7ACBB1837026A00BBDF08 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C0720CDB183972B200322959 /* SocketHelper */ = {
+			isa = PBXGroup;
+			children = (
+				C0720CDC183972C600322959 /* AsyncUdpSocket.h */,
+				C0720CDD183972C600322959 /* AsyncUdpSocket.m */,
+			);
+			name = SocketHelper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,9 +277,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84F7ACAA1837026A00BBDF08 /* ViewController.m in Sources */,
+				84F7ACAA1837026A00BBDF08 /* StartViewController.m in Sources */,
+				C0490CB818371CDB00D3C170 /* PictureViewController.m in Sources */,
 				84F7ACA41837026A00BBDF08 /* AppDelegate.m in Sources */,
+				C0720CDA183971FC00322959 /* ServerViewController.m in Sources */,
 				84F7ACA01837026A00BBDF08 /* main.m in Sources */,
+				C0720CD9183971FC00322959 /* ClientViewController.m in Sources */,
+				C0720CDE183972C600322959 /* AsyncUdpSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +492,7 @@
 				84F7ACC41837026A00BBDF08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84F7ACC51837026A00BBDF08 /* Build configuration list for PBXNativeTarget "PicSyncTests" */ = {
 			isa = XCConfigurationList;
@@ -468,6 +501,7 @@
 				84F7ACC71837026A00BBDF08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
