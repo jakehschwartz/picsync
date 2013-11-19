@@ -56,7 +56,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="000" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XdD-g8-xYO">
-                                <rect key="frame" x="111" y="135" width="42" height="31"/>
+                                <rect key="frame" x="111" y="135" width="42" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -76,7 +76,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="000" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="89c-Mk-evf">
-                                <rect key="frame" x="61" y="135" width="42" height="31"/>
+                                <rect key="frame" x="61" y="135" width="42" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -89,13 +89,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="000" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YbD-b1-biW">
-                                <rect key="frame" x="161" y="135" width="42" height="31"/>
+                                <rect key="frame" x="161" y="135" width="42" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="000" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S4Z-yM-Ou5">
-                                <rect key="frame" x="211" y="135" width="42" height="31"/>
+                                <rect key="frame" x="211" y="135" width="42" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -142,14 +142,33 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZQ-Vu-9dw">
+                                <rect key="frame" x="40" y="313" width="240" height="186"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kpd-tl-4Tg">
+                                <rect key="frame" x="122" y="518" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Take Photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="9Yn-ww-uLQ" kind="modal" id="abF-kw-lez"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="zpq-0b-cv6"/>
                     <connections>
                         <outlet property="four" destination="S4Z-yM-Ou5" id="LAe-SW-zsC"/>
+                        <outlet property="logField" destination="8ZQ-Vu-9dw" id="zaG-HG-1No"/>
                         <outlet property="meanLabel" destination="ydq-qS-ViT" id="Cgl-tn-tfQ"/>
                         <outlet property="one" destination="89c-Mk-evf" id="3AJ-pR-Jjx"/>
+                        <outlet property="photoBtn" destination="Kpd-tl-4Tg" id="h6I-qh-Xqk"/>
                         <outlet property="stddevLabel" destination="0Ix-8e-X0T" id="tWF-mj-OsT"/>
                         <outlet property="three" destination="YbD-b1-biW" id="Qs9-bA-Gvg"/>
                         <outlet property="two" destination="XdD-g8-xYO" id="u7k-Uo-xZs"/>
@@ -188,11 +207,20 @@
                                     <action selector="serverSwitched:" destination="7iN-Q6-TjQ" eventType="touchUpInside" id="tab-Sc-nyI"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="elf-vn-GBx">
+                                <rect key="frame" x="40" y="189" width="240" height="359"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="jmp-gl-gNC"/>
                     <connections>
+                        <outlet property="label" destination="B2q-O1-VWO" id="J0X-c9-Qv6"/>
+                        <outlet property="logField" destination="elf-vn-GBx" id="xi2-n5-l4N"/>
                         <outlet property="serverSwitch" destination="jsy-8M-FJy" id="Jer-b7-a8d"/>
                     </connections>
                 </viewController>
@@ -216,16 +244,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ag-me-meq">
-                                <rect key="frame" x="102" y="518" width="117" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Schedule Picture">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="schedulePhoto:" destination="tvJ-OA-tqK" eventType="touchUpInside" id="zP0-vu-mr8"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -235,7 +253,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tvJ-OA-tqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1460" y="189"/>
+            <point key="canvasLocation" x="1576" y="158"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

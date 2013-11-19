@@ -37,6 +37,10 @@
         [myAlertView show];
         
     }
+    else
+    {
+        [self schedulePhoto];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,7 +49,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)schedulePhoto:(UIButton *)sender
+- (voic)schedulePhoto
 {
     // number picker for 5-15 seconds from now
     

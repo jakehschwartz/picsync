@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		84F7AC941837026A00BBDF08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC931837026A00BBDF08 /* Foundation.framework */; };
 		84F7AC961837026A00BBDF08 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC951837026A00BBDF08 /* CoreGraphics.framework */; };
-		84F7AC981837026A00BBDF08 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC971837026A00BBDF08 /* UIKit.framework */; };
 		84F7AC9E1837026A00BBDF08 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84F7AC9C1837026A00BBDF08 /* InfoPlist.strings */; };
 		84F7ACA01837026A00BBDF08 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AC9F1837026A00BBDF08 /* main.m */; };
 		84F7ACA41837026A00BBDF08 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACA31837026A00BBDF08 /* AppDelegate.m */; };
-		84F7ACA71837026A00BBDF08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACA51837026A00BBDF08 /* Main.storyboard */; };
 		84F7ACAA1837026A00BBDF08 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACA91837026A00BBDF08 /* StartViewController.m */; };
 		84F7ACAC1837026A00BBDF08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACAB1837026A00BBDF08 /* Images.xcassets */; };
 		84F7ACB31837026A00BBDF08 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7ACB21837026A00BBDF08 /* XCTest.framework */; };
@@ -21,7 +19,9 @@
 		84F7ACB51837026A00BBDF08 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC971837026A00BBDF08 /* UIKit.framework */; };
 		84F7ACBD1837026A00BBDF08 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACBB1837026A00BBDF08 /* InfoPlist.strings */; };
 		84F7ACBF1837026A00BBDF08 /* PicSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7ACBE1837026A00BBDF08 /* PicSyncTests.m */; };
+		C023DF66183BEC6A0088157A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACA51837026A00BBDF08 /* Main.storyboard */; };
 		C0490CB818371CDB00D3C170 /* PictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0490CB718371CDB00D3C170 /* PictureViewController.m */; };
+		C04A72E6183C2D3900957DDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC971837026A00BBDF08 /* UIKit.framework */; };
 		C0720CD9183971FC00322959 /* ClientViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CD6183971FC00322959 /* ClientViewController.m */; };
 		C0720CDA183971FC00322959 /* ServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CD8183971FC00322959 /* ServerViewController.m */; };
 		C0720CDE183972C600322959 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CDD183972C600322959 /* AsyncUdpSocket.m */; };
@@ -72,8 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C04A72E6183C2D3900957DDF /* UIKit.framework in Frameworks */,
 				84F7AC961837026A00BBDF08 /* CoreGraphics.framework in Frameworks */,
-				84F7AC981837026A00BBDF08 /* UIKit.framework in Frameworks */,
 				84F7AC941837026A00BBDF08 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,7 +258,7 @@
 			files = (
 				84F7ACAC1837026A00BBDF08 /* Images.xcassets in Resources */,
 				84F7AC9E1837026A00BBDF08 /* InfoPlist.strings in Resources */,
-				84F7ACA71837026A00BBDF08 /* Main.storyboard in Resources */,
+				C023DF66183BEC6A0088157A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

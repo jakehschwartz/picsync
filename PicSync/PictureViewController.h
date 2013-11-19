@@ -12,6 +12,4 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
-- (IBAction)schedulePhoto:(UIButton *)sender;
-
 @end

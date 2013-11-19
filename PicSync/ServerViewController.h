@@ -13,6 +13,7 @@
 {
     IBOutlet UILabel *label;
     IBOutlet UIButton *serverSwitch;
+    IBOutlet UITextView *logField;
     
     AsyncUdpSocket *udpSocket;
     bool isServerOn;

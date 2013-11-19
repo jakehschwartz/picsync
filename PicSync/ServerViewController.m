@@ -49,14 +49,31 @@
            fromHost:(NSString *)host
                port:(UInt16)port
 {
-    
-    double time = [[NSDate date] timeIntervalSince1970];
-    NSString *string = [NSString stringWithFormat:@"%lf", time];
-    NSData *d = [string dataUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"--------%@:%li(%lf)-----------", host, tag, time);
-    [sock sendData:d toHost:host port:port withTimeout:-1 tag:tag];
-    [sock receiveWithTimeout:-1 tag:tag + 1];
-    //TODO: Add scrolling text field with print outs
+    NSString *cmd = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    if ([cmd isEqual:@"_"])
+    {
+        double time = [[NSDate date] timeIntervalSince1970];
+        NSString *string = [NSString stringWithFormat:@"%lf", time];
+        NSData *d = [string dataUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"--------%@:%li(%lf)-----------", host, tag, time);
+        [sock sendData:d toHost:host port:port withTimeout:-1 tag:tag];
+        [sock receiveWithTimeout:-1 tag:tag + 1];
+        logField.text = [logField.text stringByAppendingString:
+                         [NSString stringWithFormat:@"--------%@:%li(%lf)-----------\n",
+                          host, tag, time]];
+    }
+    else if ([cmd isEqual:@"!"])
+    {
+        // Make button go away
+        serverSwitch.enabled = NO;
+        
+        // Change label
+        label.text = @"Waiting for client...";
+    }
+    else
+    {
+        // TODO: Open picture view
+    }
     return TRUE;
 }
 

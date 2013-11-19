@@ -20,6 +20,9 @@
     IBOutlet UILabel *meanLabel;
     IBOutlet UILabel *stddevLabel;
     IBOutlet UIButton *connectBtn;
+    IBOutlet UIButton *photoBtn;
+    
+    IBOutlet UITextView *logField;
     
     double startTime;
     NSMutableArray *diffs;

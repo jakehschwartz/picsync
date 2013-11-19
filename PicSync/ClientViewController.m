@@ -27,8 +27,8 @@
         NSLog(@"Nice try");
         return;
     }
-        
-    connectBtn.hidden = YES;
+    
+    connectBtn.enabled = NO;
     if (diffs == nil)
     {
         diffs = [[NSMutableArray alloc] init];
@@ -67,34 +67,37 @@
     if (serverTime != 0)
     {
         NSLog(@"Difference #%li: %lf - %lf = %lf", tag, serverTime, clientTime, difference);
-        //TODO: Add to uitextview
+        logField.text = [logField.text stringByAppendingString:
+                         [NSString stringWithFormat:@"Difference #%li: %lf - %lf = %lf\n",
+                          tag, serverTime, clientTime, difference]];
         [diffs addObject:[NSNumber numberWithDouble:difference]];
     }
     else
     {
-        NSLog(@"Failed to get reading");
+        NSLog(@"Failed to get reading #%li", tag);
+        logField.text = [logField.text stringByAppendingString:
+                         [NSString stringWithFormat:@"Failed to get reading #%li\n",tag]];
     }
     
     tag++;
-    if (tag < 5)
+    if (tag < 10)
     {
         NSData *data = [NSData dataWithBytes:"_" length:1];
         startTime = [[NSDate date] timeIntervalSince1970];
-        [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag + 1];
-        [socket receiveWithTimeout:-1 tag:tag + 1];
+        [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag];
+        [socket receiveWithTimeout:-1 tag:tag];
     }
     else
     {
-        [sock close];
         one.text = @"";
         two.text = @"";
         three.text = @"";
         four.text = @"";
-        connectBtn.hidden = NO;
         
         [self calcMeanStdDev];
         
-        //TODO: Activate take picture button
+        [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag];
+        photoBtn.enabled = YES;
     }
 
     
