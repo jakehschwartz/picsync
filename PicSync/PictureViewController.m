@@ -49,7 +49,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (voic)schedulePhoto
+- (void)schedulePhoto
 {
     // number picker for 5-15 seconds from now
     

@@ -1,0 +1,173 @@
+\documentclass[10pt]{IEEEtran} % .... using IEEE Transaction style
+\usepackage{graphics}
+\usepackage[cmex10]{amsmath}
+
+% the following is to get inch margins on a letter-size paper
+\setlength{\topmargin}{0pt}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{9.0in}
+\setlength{\footskip}{0.5in}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+
+\begin{document}
+\title{Scheduling Simultanious Events for Multple Mobile Devices}
+\author{Jacob Schwartz}
+\maketitle
+
+\begin{abstract}
+*HTTP adaptive streaming protocols like HTTP Live Streaming (HLS) and Dynamic 
+Adaptive Streaming over HTTP (DASH) are gaining traction amongst mobile clients.
+This protocols can act agressively on a client, wanting to grab the best
+possible video quality possible. This can even be at the expense of other
+clients on the network. In order to enforce class of service (CoS), algorithms
+try to tame the client's aggressiveness by making them downshift video bitrates
+under poor network conditions. In this paper, an alternative downshifting
+formula is discussed, along with a small experiment that looks at the download
+times for video segment files at different bitrates under a real-world WiFi
+network.
+
+
+In this paper, a basic network time synchronization technique will be used to
+schedule two mobile devices to take a picture at the same time.
+\end{abstract}
+
+\section{Introduction}
+*Using HTTP adaptive streaming protocols, mobile devices are able to quickly
+adapt to the changing networks they travel through. This creates a problem as
+the mobile client will aggressively attempt to take the available bandwidth to 
+download the best available bandwidth. If there is no one on the network, this
+is fine, but the clients also can act aggressively when the network is congested
+with traffic, possibly other aggressive clients. When they are overly 
+aggressive, the clients break the class of service (CoS) infrustructure. When 
+CoS is not upheld, all clients on a network suffer. 
+
+*To counter this problem, additional logic must be implemented into the client.
+This logic examines the current state of the network and adjusts the client's
+aggressiveness accordingly. When the network is not being fully utilized, the
+client acts as agressively as possible by retriving the highest quality video
+segments. Inversly, if the network is being utilized, the client takes notice
+and drops the bitrate one level. Segment downloads also are aborted if it is
+taking too long to recieve the segment. The bitrate will also be dropped in this
+case and will be restored if the network recovers.
+
+In this paper, we use a basic process to calculate the time offsets between two
+mobile devices. We schedule an event on one of the devices and it tells the
+other device to schedule the same event for the same time, using the time offset
+of the device. To show the these events occur at the same point in time, both
+device take a picture of the same clock. To take the experiment a step further,
+the scheduling of events could also take place across different platforms or run
+off different wireless protocols like TCP or Bluetooth.
+
+\section{Prior Work}
+
+*To provide the best user experience when watching streaming video using one of
+the HTTP adaptive streaming protocols, rate adaption is used. This gives the
+user the highest quality video possible while still maintains constant buffering
+on the client. Lui et al. \cite{rate} approach this problem at the video segment level. 
+They pace the client requests on a timer to keep the network from getting
+congested with several requests coming all at once. In addition, they also 
+propose a TCP-level solution but most mobile clients do not operate a TCP buffer
+level, but instead work at the segment level.
+
+*Controlling the timing of the requests does not alter the agressiveness of the
+client as it still may be attempting to download a bitrate that is still too
+high for the current network. Ma and Bartos \cite{cos} add request backoffs and download 
+aborts for segments that are late so that they can correctly select the 
+agressiveness of the client. This allows for better class of service (CoS) 
+enforcement. In their case, the agressiveness of the client directly translates 
+into the bitrate ($b$) of video it tries to download. If there is extra 
+bandwidth on the network, the client will try to to upshift to a better bitrate. 
+Likewise, when the client is using too much bandwith or their is a lot of 
+traffic on the network and the segment does not download in time, the bitrate is 
+downshifted.
+
+*An upshift ($u$) is determined by the possibility of moving up to the next bitrate
+based of the most recent segments download time $\delta$. Whereas downshifts 
+($d$) only occur when a download abort for segments that are taking too long. 
+The segment abort time $\alpha$ is typically set to $L$, which is the length of 
+all of the segments in seconds.
+\begin{equation}
+    d = \delta > \alpha
+\end {equation}
+\begin{equation}
+    u = \frac{b+1}{b} \times \delta > \alpha
+\end {equation}
+
+\section{Improved Downshifting}
+
+*Having to wait until a segment download is aborted before making a bandwidth
+downshift is a waste of time. A decision could be made before the next segment 
+on whether or not to downshift. Knowing the time taken to download the previous
+segment and the network conditions at the time, a guess can be made about the 
+download time of the next segment based on the current network conditions. 
+In this experiment, I will be ignoring segment buffering and queue behaviors 
+discussed by Ma and Bartos.
+\begin {equation}
+    d = \delta_t > \alpha \vee E_{t - 1} \times \delta_{t - 1} < E_{t} \times L
+\end {equation}
+
+*In the updated formula, a downshift will still occur if there is a download
+abort due to a timeout. There is another condition that can cause a timeout that
+is checked before the segment download even starts. The current excess bandwidth
+on the network is multiplied by the the maximum time before a download abort
+happens and is compared to the download time of the previous download conditions
+and segment download time. This allows for a ratio of excess bandwidth to 
+download time and when it reaches a certain threashold, a downshift will occur.
+
+\section{Results}
+
+To test the validity of our algorithm, we wrote a simple application to find 
+the offset between two mobile devices, iOS devices in this case. This
+application has one device declare itself the server. This device then waits for
+a client device to connect. Over a UDP connection, the server then sends the
+device's time in milliseconds since the Unix Epoch several times, which the
+client uses to get an average offset from its time. Once this offset is
+calculated, the user tells the client device when to take a picture. The client
+tells the server to take a picture at the same point in time, using the average
+offset that was calculated. To determine how far off the picture event take
+place, the phones are positioned to take a picture of a digital clock.
+
+%SCREEN SHOTS OF PICTURES AND SHIT
+
+\begin{figure}
+{\resizebox{3.2in}{!}{\includegraphics{experiment/out-0.png}}}
+\caption{Download times at 0 Kbps}
+\label{fig:graph0}
+\end{figure}
+
+\section{Conclusion}
+
+*These times were obtained on a laptop using a wireless network with little to 
+no other traffic at the same time. Based on the times, it is clear that in this
+setting there would be no need for downshifting. As seen in the Figures 1-5,
+most of the times occur in under a second. Interestingly, the times for all of 
+the Akumai segments with bandwidths that actually contain video download faster 
+than the Azuki segments. This could happen for a number of reasons, closer 
+physical location being one of them, but this is not the focus of the 
+experiment.
+
+There are several expansions to this project. One next step is to port the 
+application to other mobile operating systems to find any other potential 
+pitfalls that would cause the offset and the timing to be incorrect. Connecting
+over Bluetooth would eliminate the 'ugliness' of having to enter an IP address
+to connect. To use more than two devices, a multicast protocol could be used and
+one of the mobile devices would act as a server or an actual dedicated server
+could be used. The latter would also remove the need to enter an IP address,
+because it would be static. 
+
+\begin{thebibliography}{1}
+
+\bibitem{rate}
+C. Lui, I. Bouazizi, and M. Gabbouj, ``\emph{Rate Adaptation for Adaptive HTTP
+Streamimg},'' ACM MMSys'11, February 2011.
+
+\bibitem{cos}
+K. Ma, and R. Bartos, ``\emph{CoS Enforcement for HTTP Adaptive Streaming},'' 
+IEEE GC'12 Workshop, July 2003.
+
+\end{thebibliography}
+
+\end{document}
