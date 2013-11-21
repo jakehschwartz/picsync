@@ -1,8 +1,7 @@
-\documentclass[10pt]{IEEEtran} % .... using IEEE Transaction style
+\documentclass[10pt]{IEEEtran} 
 \usepackage{graphics}
 \usepackage[cmex10]{amsmath}
 
-% the following is to get inch margins on a letter-size paper
 \setlength{\topmargin}{0pt}
 \setlength{\headheight}{0in}
 \setlength{\headsep}{0in}
@@ -95,27 +94,6 @@ all of the segments in seconds.
 \begin{equation}
     u = \frac{b+1}{b} \times \delta > \alpha
 \end {equation}
-
-\section{Improved Downshifting}
-
-*Having to wait until a segment download is aborted before making a bandwidth
-downshift is a waste of time. A decision could be made before the next segment 
-on whether or not to downshift. Knowing the time taken to download the previous
-segment and the network conditions at the time, a guess can be made about the 
-download time of the next segment based on the current network conditions. 
-In this experiment, I will be ignoring segment buffering and queue behaviors 
-discussed by Ma and Bartos.
-\begin {equation}
-    d = \delta_t > \alpha \vee E_{t - 1} \times \delta_{t - 1} < E_{t} \times L
-\end {equation}
-
-*In the updated formula, a downshift will still occur if there is a download
-abort due to a timeout. There is another condition that can cause a timeout that
-is checked before the segment download even starts. The current excess bandwidth
-on the network is multiplied by the the maximum time before a download abort
-happens and is compared to the download time of the previous download conditions
-and segment download time. This allows for a ratio of excess bandwidth to 
-download time and when it reaches a certain threashold, a downshift will occur.
 
 \section{Results}
 
