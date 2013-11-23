@@ -11,5 +11,6 @@
 @interface PictureViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (nonatomic) double time;
 
 @end

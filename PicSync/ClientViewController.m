@@ -7,6 +7,7 @@
 //
 
 #import "ClientViewController.h"
+#import "PictureViewController.h"
 
 #define kPort 11111
 
@@ -49,6 +50,46 @@
     [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
     [socket receiveWithTimeout:-1 tag:0];
 }
+
+-(IBAction)schedulePhoto:(id)sender
+{
+    // Time picker modal
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo" message:@"Take photo in how many seconds?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Enter", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show];
+    
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *textField = [alertView textFieldAtIndex:0];
+    NSString* detailString = textField.text;
+    
+    NSLog(@"String is: %@", detailString); //Put it on the debugger
+    
+    if ([textField.text length] <= 0 || buttonIndex == 0) {
+        return;
+    }
+    if (buttonIndex == 1) {
+        double t = 0;
+        
+        // Send data
+        NSString *address = [NSString stringWithFormat:@"%@.%@.%@.%@", one.text,
+                             two.text, three.text, four.text];
+        UInt16 port = kPort;
+        NSString *time = [NSString stringWithFormat:@"%lf", t + self.offset];
+        NSData * data = [time dataUsingEncoding:NSUTF8StringEncoding];
+        [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
+        
+        // Open PictureViewController
+        PictureViewController *pvc = [[PictureViewController alloc] init];
+        pvc.time = t;
+        [self presentViewController:pvc animated:YES
+                         completion:^{[self dismissViewControllerAnimated:NO completion:nil];}];
+    }
+}
+
 
 #pragma mark - AsyncUdpSocketDelegate
 - (BOOL)onUdpSocket:(AsyncUdpSocket *)sock
@@ -199,6 +240,8 @@
     stddev /= (devs.count - 1);
     self.stddevLabel.text = [NSString stringWithFormat:@"%0.5lf", sqrt(stddev)];
     NSLog(@"Calced: %lf : %lf", mean, stddev);
+    
+    self.offset = mean;
 }
 
 @end

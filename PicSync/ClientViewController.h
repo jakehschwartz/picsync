@@ -32,6 +32,8 @@
 @property (nonatomic, strong) UITextField *one, *two, *three, *four;
 @property (nonatomic, strong) UIButton *connectBtn;
 @property (nonatomic, strong) UILabel *meanLabel, *stddevLabel;
+@property (nonatomic) double offset;
 
 -(IBAction)connect:(id)sender;
+-(IBAction)schedulePhoto:(id)sender;
 @end

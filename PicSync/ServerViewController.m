@@ -7,6 +7,7 @@
 //
 
 #import "ServerViewController.h"
+#import "PictureViewController.h"
 
 #include <ifaddrs.h>
 #include <arpa/inet.h>
@@ -72,7 +73,11 @@
     }
     else
     {
-        // TODO: Open picture view
+        // Open picture view
+        PictureViewController *pvc = [[PictureViewController alloc] init];
+        pvc.time = [cmd doubleValue];
+        [self presentViewController:pvc animated:YES
+                         completion:^{[self dismissViewControllerAnimated:NO completion:nil];}];
     }
     return TRUE;
 }

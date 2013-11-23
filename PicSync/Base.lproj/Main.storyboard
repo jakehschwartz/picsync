@@ -113,6 +113,9 @@
                                 <state key="normal" title="Connect">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="connect:" destination="8IO-8l-4xK" eventType="touchUpInside" id="OIU-z0-qiN"/>
+                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Mean:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="evY-Kn-Ntj">
                                 <rect key="frame" x="104" y="183" width="48" height="21"/>
@@ -156,7 +159,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="9Yn-ww-uLQ" kind="modal" id="abF-kw-lez"/>
+                                    <action selector="schedulePhoto:" destination="8IO-8l-4xK" eventType="touchUpInside" id="Fqz-Ih-Zjt"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -164,11 +167,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="zpq-0b-cv6"/>
                     <connections>
+                        <outlet property="connectBtn" destination="TTx-HK-EDP" id="SWQ-dN-adM"/>
                         <outlet property="four" destination="S4Z-yM-Ou5" id="LAe-SW-zsC"/>
                         <outlet property="logField" destination="8ZQ-Vu-9dw" id="zaG-HG-1No"/>
                         <outlet property="meanLabel" destination="ydq-qS-ViT" id="Cgl-tn-tfQ"/>
                         <outlet property="one" destination="89c-Mk-evf" id="3AJ-pR-Jjx"/>
-                        <outlet property="photoBtn" destination="Kpd-tl-4Tg" id="h6I-qh-Xqk"/>
+                        <outlet property="photoBtn" destination="Kpd-tl-4Tg" id="p1W-Oi-6HY"/>
                         <outlet property="stddevLabel" destination="0Ix-8e-X0T" id="tWF-mj-OsT"/>
                         <outlet property="three" destination="YbD-b1-biW" id="Qs9-bA-Gvg"/>
                         <outlet property="two" destination="XdD-g8-xYO" id="u7k-Uo-xZs"/>

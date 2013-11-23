@@ -39,7 +39,14 @@
     }
     else
     {
-        [self schedulePhoto];
+        double t = [[NSDate date] timeIntervalSince1970];
+        double eventTime = self.time - t;
+        NSTimer *timer = [NSTimer timerWithTimeInterval:eventTime / 1000
+                                                 target:self
+                                               selector:@selector(takePhoto)
+                                               userInfo:nil
+                                                repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     }
 }
 
@@ -49,16 +56,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)schedulePhoto
-{
-    // number picker for 5-15 seconds from now
-    
-    // when done, connect to other phone and tell to take picture in x + offset seconds
-    
-    // optional: have a countdown widget
-}
 
-- (void)takePhoto:(UIButton *)sender {
+- (void)takePhoto {
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
