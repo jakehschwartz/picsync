@@ -19,7 +19,7 @@
             </objects>
             <point key="canvasLocation" x="-58" y="222"/>
         </scene>
-        <!--Start View Controller-->
+        <!--Start View Controller - PicSync-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="StartViewController" sceneMemberID="viewController">
@@ -54,12 +54,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="1sD-KD-Knv"/>
+                    <navigationItem key="navigationItem" title="PicSync" id="1sD-KD-Knv"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
-        <!--Client View Controller-->
+        <!--Client View Controller - Client-->
         <scene sceneID="k7m-qQ-2nG">
             <objects>
                 <viewController id="8IO-8l-4xK" customClass="ClientViewController" sceneMemberID="viewController">
@@ -181,7 +181,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="zpq-0b-cv6"/>
+                    <navigationItem key="navigationItem" title="Client" id="zpq-0b-cv6"/>
                     <connections>
                         <outlet property="connectBtn" destination="TTx-HK-EDP" id="SWQ-dN-adM"/>
                         <outlet property="four" destination="S4Z-yM-Ou5" id="LAe-SW-zsC"/>
@@ -198,7 +198,7 @@
             </objects>
             <point key="canvasLocation" x="1275" y="656"/>
         </scene>
-        <!--Server View Controller-->
+        <!--Server View Controller - Server-->
         <scene sceneID="qyv-3w-bds">
             <objects>
                 <viewController id="7iN-Q6-TjQ" customClass="ServerViewController" sceneMemberID="viewController">
@@ -237,7 +237,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="jmp-gl-gNC"/>
+                    <navigationItem key="navigationItem" title="Server" id="jmp-gl-gNC"/>
                     <connections>
                         <outlet property="label" destination="B2q-O1-VWO" id="J0X-c9-Qv6"/>
                         <outlet property="logField" destination="elf-vn-GBx" id="xi2-n5-l4N"/>
