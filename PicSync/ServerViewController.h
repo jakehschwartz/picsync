@@ -20,6 +20,7 @@
 }
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIButton *serverSwitch;
+@property (nonatomic, strong) UITextView *logField;
 
 -(IBAction)serverSwitched:(id)sender;
 

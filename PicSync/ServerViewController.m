@@ -19,6 +19,7 @@
 @implementation ServerViewController
 @synthesize label;
 @synthesize serverSwitch;
+@synthesize logField;
 
 #pragma mark - UI Actions
 -(IBAction)serverSwitched:(id)sender
@@ -135,6 +136,7 @@
     }
     else
     {
+        NSLog(@"Address is:\n %@", address);
         label.text = [NSString stringWithFormat:@"Connect to %@", address];
     }
 }
