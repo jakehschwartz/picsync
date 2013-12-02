@@ -71,13 +71,20 @@
         
         // Change label
         label.text = @"Waiting for client...";
+        
+        // Wait for picture message
+        [udpSocket receiveWithTimeout:-1 tag:1];
     }
     else
     {
+        [udpSocket close];
+        
         // Open picture view
         PictureViewController *pvc = [[PictureViewController alloc] init];
         pvc.time = [cmd doubleValue];
-        [self presentViewController:pvc animated:YES
+        NSLog(@"Request to take picture in %lf milliseconds", pvc.time);
+        [self presentViewController:pvc
+                           animated:YES
                          completion:^{[self dismissViewControllerAnimated:NO completion:nil];}];
     }
     return TRUE;

@@ -25,8 +25,17 @@
 
 - (void)viewDidLoad
 {
+    done = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidLoad];
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    if (done)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                               message:@"Device has no camera"
@@ -39,14 +48,21 @@
     }
     else
     {
-        double t = [[NSDate date] timeIntervalSince1970];
-        double eventTime = self.time - t;
-        NSTimer *timer = [NSTimer timerWithTimeInterval:eventTime / 1000
+        picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.showsCameraControls = NO;
+        
+        [self presentViewController:picker animated:YES completion:NULL];
+        
+        NSTimer *timer = [NSTimer timerWithTimeInterval:self.time/1000
                                                  target:self
                                                selector:@selector(takePhoto)
                                                userInfo:nil
                                                 repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+        NSLog(@"Event scheduled");
     }
 }
 
@@ -58,31 +74,27 @@
 
 
 - (void)takePhoto {
-    
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    
-    [self presentViewController:picker animated:YES completion:NULL];
+    [picker takePicture];
     
 }
 
 #pragma mark UIPickerViewDelegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)p didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    self.imageView.image = chosenImage;
-    
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+    NSLog(@"Picture taken");
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
+
+    done = YES;
+    [p dismissViewControllerAnimated:YES completion:nil];
     
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
     
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
+    done = YES;
+    [p dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -54,7 +54,11 @@
 -(IBAction)schedulePhoto:(id)sender
 {
     // Time picker modal
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo" message:@"Take photo in how many seconds?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Enter", nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo"
+                                                     message:@"Take photo in how many seconds?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Enter", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
     
@@ -66,13 +70,13 @@
     UITextField *textField = [alertView textFieldAtIndex:0];
     NSString* detailString = textField.text;
     
-    NSLog(@"String is: %@", detailString); //Put it on the debugger
+    NSLog(@"String is: %@ (%d)", detailString, buttonIndex); //Put it on the debugger
     
     if ([textField.text length] <= 0 || buttonIndex == 0) {
         return;
     }
-    if (buttonIndex == 1) {
-        double t = 0;
+    else {
+        double t = [detailString doubleValue] * 1000;
         
         // Send data
         NSString *address = [NSString stringWithFormat:@"%@.%@.%@.%@", one.text,
@@ -80,6 +84,7 @@
         UInt16 port = kPort;
         NSString *time = [NSString stringWithFormat:@"%lf", t + self.offset];
         NSData * data = [time dataUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"Sending camera request to %@:%d for %lf milliseconds", address, port, t + self.offset);
         [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
         
         // Open PictureViewController
@@ -130,14 +135,11 @@
     }
     else
     {
-        one.text = @"";
-        two.text = @"";
-        three.text = @"";
-        four.text = @"";
-        
         [self calcMeanStdDev];
         
+        NSData *data = [NSData dataWithBytes:"!" length:1];
         [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag];
+        
         photoBtn.enabled = YES;
     }
 

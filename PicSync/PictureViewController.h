@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface PictureViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+    UIImagePickerController *picker;
+    bool done;
+}
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic) double time;
