@@ -12,7 +12,7 @@
 \setlength{\textwidth}{6.5in}
 
 \begin{document}
-\title{Scheduling Simultanious Events for Multple Mobile Devices}
+\title{Scheduling Simultaneous Events for Multiple Mobile Devices}
 \author{Jacob Schwartz}
 \maketitle
 
@@ -26,16 +26,17 @@ devices to take a picture at the same time.
 
 \section{Introduction}
 
-Intro sentance or two. 
-Mobile phone applications may not want to trust their
-local clock in various instances. For example, a user may change their local
-clock in order to beat a loophole in a game. In this case, the phone would be
-comparing what it believes the time to be with a server. This technique of time
-synchronization is not restricted to a client and a cloud server, it can also be
-performed between two mobile clients on the same network. In this instance, one
-of the devices will have to act as the ``server'', and the other device will
-calculate its offset based on the ``server'' device's time, even if it not the
-correct time.
+Applications that communicate to other machines over the Internet occasionally
+need to have their times synchronized to create a reference point that would be
+used for the rest of their communications.  Mobile phone applications may not
+want to use their local clock in various instances. For example, a user may
+change their local clock in order to beat a loophole in a game. In this case,
+the phone would be comparing what it believes the time to be with a server. This
+technique of time synchronization is not restricted to a client and a cloud
+server, it can also be performed between two mobile clients on the same network.
+In this instance, one of the devices will have to act as the ``server'', and the
+other device will calculate its offset based on the ``server'' device's time,
+even if it not the correct time.
 
 In this paper, we use a basic process to calculate the time offsets between two
 mobile devices. We schedule an event on one of the devices and it tells the
@@ -45,15 +46,15 @@ device take a picture of the same clock. To take the experiment a step further,
 the scheduling of events could also take place across different platforms or run
 off different wireless protocols like TCP or Bluetooth.
 
-Paragraph talking about time syhcnornization NTP?:
+% Paragraph talking about time syhcnornization NTP?:
 
 To calculate the offset, a formula similar to the one used in NTP will be used.
-This involves taking the time three on three ocassions. The client devices
+This involves taking the time three on three occasions. The client devices
 checks its time when it sends the request packet to the service device. This
 time will be called $t_0$. When the server receives the request packet, it
 immediately send the client the time on the server's clock($t_1$). The last
-time($t_2$) is recorded by the client when it recieves $t_1$ from the server. 
-It is assumed that the round trip time is symetrric. The offset($o$) is the
+time($t_2$) is recorded by the client when it receives $t_1$ from the server. 
+It is assumed that the round trip time is symmetric. The offset($o$) is the
 server time minus the client time minus the half of the round trip time:
 \begin{equation}
     o = t_1 - t_2 - \frac{t_2 - t_0}{2} 
@@ -90,6 +91,8 @@ the Akumai segments with bandwidths that actually contain video download faster
 than the Azuki segments. This could happen for a number of reasons, closer 
 physical location being one of them, but this is not the focus of the 
 experiment.
+
+This experiment was run between two iPhone 5 running iOS 7. MORE.
 
 There are several expansions to this project. One next step is to port the 
 application to other mobile operating systems to find any other potential 
