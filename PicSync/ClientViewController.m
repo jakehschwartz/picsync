@@ -26,6 +26,13 @@
         three.text.length == 0 || four.text.length == 0)
     {
         NSLog(@"Nice try");
+        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"Fill in all the fields"
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+            
+        [myAlertView show];
         return;
     }
     
@@ -53,13 +60,25 @@
 
 -(IBAction)schedulePhoto:(id)sender
 {
-    // Time picker modal
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo"
-                                                     message:@"Take photo in how many seconds?"
-                                                    delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                           otherButtonTitles:@"Enter", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UIAlertView * alert = nil;
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                           message:@"Device has no camera"
+                                          delegate:nil
+                                 cancelButtonTitle:@"OK"
+                                 otherButtonTitles: nil];
+    }
+    else{
+        // Time picker modal
+        alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo"
+                                           message:@"Take photo in how many seconds?"
+                                          delegate:self
+                                 cancelButtonTitle:@"Cancel"
+                                 otherButtonTitles:@"Enter", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    }
+    
     [alert show];
     
     
@@ -69,8 +88,6 @@
 {
     UITextField *textField = [alertView textFieldAtIndex:0];
     NSString* detailString = textField.text;
-    
-    NSLog(@"String is: %@ (%d)", detailString, buttonIndex); //Put it on the debugger
     
     if ([textField.text length] <= 0 || buttonIndex == 0) {
         return;
@@ -82,17 +99,43 @@
         NSString *address = [NSString stringWithFormat:@"%@.%@.%@.%@", one.text,
                              two.text, three.text, four.text];
         UInt16 port = kPort;
-        NSString *time = [NSString stringWithFormat:@"%lf", t + self.offset];
+        NSString *time = [NSString stringWithFormat:@"%lf", t];
         NSData * data = [time dataUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"Sending camera request to %@:%d for %lf milliseconds", address, port, t + self.offset);
+        NSLog(@"Sending camera request to %@:%d for %lf milliseconds", address, port, t);
         [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
         
-        // Open PictureViewController
-        PictureViewController *pvc = [[PictureViewController alloc] init];
-        pvc.time = t;
-        [self presentViewController:pvc animated:YES
-                         completion:^{[self dismissViewControllerAnimated:NO completion:nil];}];
+        NSTimer *timer = [NSTimer timerWithTimeInterval:t + self.offset
+                                                 target:self
+                                               selector:@selector(takePhoto)
+                                               userInfo:nil
+                                                repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+        NSLog(@"Event scheduled at %lf", [[NSDate date] timeIntervalSince1970]);
+        photoBtn.titleLabel.text = [NSString stringWithFormat:@"Picture scheduled for %lf seconds", t + self.offset];
     }
+}
+
+#pragma mark - photo stuff
+- (void)takePhoto {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.showsCameraControls = NO;
+    
+    [picker takePicture];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)p didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    NSLog(@"Picture taken at %lf", [[NSDate date] timeIntervalSince1970]);
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
+    photoBtn.titleLabel.text = @"Picture taken";
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
+    
 }
 
 
@@ -140,6 +183,7 @@
         NSData *data = [NSData dataWithBytes:"!" length:1];
         [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag];
         
+        connectBtn.enabled = YES;
         photoBtn.enabled = YES;
     }
 

@@ -78,16 +78,55 @@
     else
     {
         [udpSocket close];
-        
-        // Open picture view
-        PictureViewController *pvc = [[PictureViewController alloc] init];
-        pvc.time = [cmd doubleValue];
-        NSLog(@"Request to take picture in %lf milliseconds", pvc.time);
-        [self presentViewController:pvc
-                           animated:YES
-                         completion:^{[self dismissViewControllerAnimated:NO completion:nil];}];
+    
+        NSTimer *timer = [NSTimer timerWithTimeInterval:[cmd doubleValue]
+                                                 target:self
+                                               selector:@selector(takePhoto)
+                                               userInfo:nil
+                                                repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+        NSLog(@"Event scheduled at %lf", [[NSDate date] timeIntervalSince1970]);
+        serverSwitch.titleLabel.text = [NSString stringWithFormat:@"Picture scheduled for %lf seconds", [cmd doubleValue]];
     }
+
     return TRUE;
+}
+
+#pragma mark - photo stuff
+- (void)takePhoto {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"Device has no camera"
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+        
+        [myAlertView show];
+        return;
+    }
+
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.showsCameraControls = NO;
+    
+    [picker takePicture];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)p didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    NSLog(@"Picture taken at %lf", [[NSDate date] timeIntervalSince1970]);
+    
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
+    serverSwitch.titleLabel.text = @"Picture taken";
+
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
+
 }
 
 #pragma mark - Init Methods

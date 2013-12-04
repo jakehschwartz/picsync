@@ -10,7 +10,9 @@
 #import "AsyncUdpSocket.h"
 
 @interface ClientViewController : UIViewController <AsyncUdpSocketDelegate, 
-                                                    UIGestureRecognizerDelegate>
+                                                    UIGestureRecognizerDelegate,
+                                                    UIImagePickerControllerDelegate,
+                                                    UINavigationControllerDelegate>
 {
     IBOutlet UITextField *one;
     IBOutlet UITextField *two;

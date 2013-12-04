@@ -56,7 +56,7 @@
         
         [self presentViewController:picker animated:YES completion:NULL];
         
-        NSTimer *timer = [NSTimer timerWithTimeInterval:self.time/1000
+        NSTimer *timer = [NSTimer timerWithTimeInterval:self.time
                                                  target:self
                                                selector:@selector(takePhoto)
                                                userInfo:nil
@@ -75,7 +75,6 @@
 
 - (void)takePhoto {
     [picker takePicture];
-    
 }
 
 #pragma mark UIPickerViewDelegate

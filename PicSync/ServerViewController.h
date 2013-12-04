@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "AsyncUdpSocket.h"
 
-@interface ServerViewController : UIViewController <AsyncUdpSocketDelegate>
+@interface ServerViewController : UIViewController <AsyncUdpSocketDelegate,
+                                                    UIImagePickerControllerDelegate,
+                                                    UINavigationControllerDelegate>
 {
     IBOutlet UILabel *label;
     IBOutlet UIButton *serverSwitch;
