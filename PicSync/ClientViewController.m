@@ -61,7 +61,7 @@
 -(IBAction)schedulePhoto:(id)sender
 {
     UIAlertView * alert = nil;
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    /*if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                            message:@"Device has no camera"
@@ -69,7 +69,7 @@
                                  cancelButtonTitle:@"OK"
                                  otherButtonTitles: nil];
     }
-    else{
+    else{*/
         // Time picker modal
         alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo"
                                            message:@"Take photo in how many seconds?"
@@ -77,7 +77,7 @@
                                  cancelButtonTitle:@"Cancel"
                                  otherButtonTitles:@"Enter", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    }
+    //}
     
     [alert show];
     
@@ -93,7 +93,7 @@
         return;
     }
     else {
-        double t = [detailString doubleValue] * 1000;
+        double t = [detailString doubleValue];
         
         // Send data
         NSString *address = [NSString stringWithFormat:@"%@.%@.%@.%@", one.text,
@@ -101,7 +101,7 @@
         UInt16 port = kPort;
         NSString *time = [NSString stringWithFormat:@"%lf", t];
         NSData * data = [time dataUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"Sending camera request to %@:%d for %lf milliseconds", address, port, t);
+        NSLog(@"Sending camera request to %@:%d for %lf seconds", address, port, t);
         [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
         
         NSTimer *timer = [NSTimer timerWithTimeInterval:t + self.offset
@@ -117,12 +117,26 @@
 
 #pragma mark - photo stuff
 - (void)takePhoto {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+     
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Device has no camera"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        
+        [alert show];
+        return;
+     }
+     
+    
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     picker.showsCameraControls = NO;
-    
+    [self presentViewController:picker animated:NO completion:nil];
+
     [picker takePicture];
 }
 
@@ -132,10 +146,11 @@
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
     photoBtn.titleLabel.text = @"Picture taken";
+    [p dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
-    
+    [p dismissViewControllerAnimated:NO completion:nil];
 }
 
 

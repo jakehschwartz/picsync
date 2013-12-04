@@ -85,8 +85,8 @@
                                                userInfo:nil
                                                 repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-        NSLog(@"Event scheduled at %lf", [[NSDate date] timeIntervalSince1970]);
-        serverSwitch.titleLabel.text = [NSString stringWithFormat:@"Picture scheduled for %lf seconds", [cmd doubleValue]];
+        NSLog(@"Event scheduled at %lf for %lf", [[NSDate date] timeIntervalSince1970], [cmd doubleValue]);
+        label.text = [NSString stringWithFormat:@"Picture in %lf", [cmd doubleValue]];
     }
 
     return TRUE;
@@ -94,6 +94,7 @@
 
 #pragma mark - photo stuff
 - (void)takePhoto {
+    NSLog(@"1");
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -105,14 +106,19 @@
         [myAlertView show];
         return;
     }
+    NSLog(@"2");
 
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     picker.showsCameraControls = NO;
-    
+    [self presentViewController:picker animated:NO completion:nil];
+    NSLog(@"3");
+
     [picker takePicture];
+    NSLog(@"4");
+
 }
 
 - (void)imagePickerController:(UIImagePickerController *)p didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -122,11 +128,12 @@
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
     serverSwitch.titleLabel.text = @"Picture taken";
+    [p dismissViewControllerAnimated:NO completion:nil];
 
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
-
+    [p dismissViewControllerAnimated:NO completion:nil];
 }
 
 #pragma mark - Init Methods
