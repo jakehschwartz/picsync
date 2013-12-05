@@ -40,12 +40,6 @@
     }
 
     // Add the video frame output
-    /*AVCaptureVideoDataOutput *videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-    [videoOutput setAlwaysDiscardsLateVideoFrames:YES];
-    [videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
-    
-    [videoOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];*/
-    
     stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [stillImageOutput setOutputSettings:outputSettings];
@@ -60,7 +54,6 @@
         return NO;
     }
     
-    //[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
     [captureSession startRunning];
     
     return YES;
@@ -95,7 +88,6 @@
 -(void) takePhoto
 {
     NSLog(@"Event occurred for %lf", [[NSDate date] timeIntervalSince1970]);
-    //[captureSession startRunning];
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in stillImageOutput.connections)
     {
@@ -139,4 +131,10 @@
         picLabel.text = @"Picture Taken";
     }
 }
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
 @end

@@ -120,10 +120,6 @@
     NSString* newStr = [NSString stringWithUTF8String:[data bytes]];
     double serverTime = [newStr doubleValue];
     double time = [[NSDate date] timeIntervalSince1970];
-//    double sendTime = (time - startTime) / 2;
-//    double clientTime = time - sendTime;
-//    double difference = serverTime - clientTime;
-    
     double sendTime = (time - startTime) / 2;
     double difference = serverTime - startTime - sendTime;
     
@@ -144,8 +140,7 @@
                          [NSString stringWithFormat:@"Failed to get reading #%li\n",tag]];
     }
     
-    tag++;
-    if (tag < 10)
+    if (++tag < 10)
     {
         NSData *data = [NSData dataWithBytes:"_" length:1];
         startTime = [[NSDate date] timeIntervalSince1970];
