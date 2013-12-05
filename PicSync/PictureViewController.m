@@ -7,93 +7,136 @@
 //
 
 #import "PictureViewController.h"
-
-@interface PictureViewController ()
-
-@end
+#define kImageCapturedSuccessfully @"imageCapturedSuccessfully"
 
 @implementation PictureViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (bool)initializeCamera
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    done = NO;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidLoad];
-    if (done)
+    // Grab the back-facing camera
+    AVCaptureDevice *backFacingCamera = nil;
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for (AVCaptureDevice *device in devices)
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        if ([device position] == AVCaptureDevicePositionBack)
+        {
+            backFacingCamera = device;
+        }
     }
-    else if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera"
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-        
-        [myAlertView show];
-        
+    
+    // Create the capture session
+    captureSession = [[AVCaptureSession alloc] init];
+ 
+    // Add the video input
+    NSError *error = nil;
+    AVCaptureDeviceInput *videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:backFacingCamera error:&error];
+    if (error != nil)
+    {
+        return NO;
+    }
+    if ([captureSession canAddInput:videoInput])
+    {
+        [captureSession addInput:videoInput];
+    }
+
+    // Add the video frame output
+    /*AVCaptureVideoDataOutput *videoOutput = [[AVCaptureVideoDataOutput alloc] init];
+    [videoOutput setAlwaysDiscardsLateVideoFrames:YES];
+    [videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
+    
+    [videoOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];*/
+    
+    stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
+    [stillImageOutput setOutputSettings:outputSettings];
+    
+    if ([captureSession canAddOutput:stillImageOutput])
+    {
+        [captureSession addOutput:stillImageOutput];
     }
     else
     {
-        picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = YES;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        picker.showsCameraControls = NO;
-        
-        [self presentViewController:picker animated:YES completion:NULL];
-        
-        NSTimer *timer = [NSTimer timerWithTimeInterval:self.time
-                                                 target:self
-                                               selector:@selector(takePhoto)
-                                               userInfo:nil
-                                                repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-        NSLog(@"Event scheduled");
+        NSLog(@"Couldn't add video output");
+        return NO;
+    }
+    
+    //[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+    [captureSession startRunning];
+    
+    return YES;
+}
+
+-(void) scheduleWithInterval:(NSTimeInterval)time withLabel:(UILabel*) l;
+{
+    if (![self initializeCamera])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"No camera"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
+    picLabel = l;
+    NSTimer *timer = [NSTimer timerWithTimeInterval:time
+                                             target:self
+                                           selector:@selector(takePhoto)
+                                           userInfo:nil
+                                            repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    NSLog(@"Event scheduled for %lf", [[NSDate date] timeIntervalSince1970] + time);
+    picLabel.text = [NSString stringWithFormat:@"Picture in %lf", time];
+
+}
+
+
+-(void) takePhoto
+{
+    NSLog(@"Event occurred for %lf", [[NSDate date] timeIntervalSince1970]);
+    //[captureSession startRunning];
+    AVCaptureConnection *videoConnection = nil;
+    for (AVCaptureConnection *connection in stillImageOutput.connections)
+    {
+        for (AVCaptureInputPort *port in [connection inputPorts])
+        {
+            if ([[port mediaType] isEqual:AVMediaTypeVideo] )
+            {
+                videoConnection = connection;
+                break;
+            }
+        }
+        if (videoConnection) { break; }
+    }
+    
+    NSLog(@"about to request a capture from: %@ (%@)", stillImageOutput, videoConnection);
+    [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
+     {
+//         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+//         if (exifAttachments)
+//             NSLog(@"attachements: %@", exifAttachments);
+//         else
+//             NSLog(@"no attachments");
+         
+         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+         UIImage *image = [[UIImage alloc] initWithData:imageData];
+         UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+     }];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    if (error != NULL) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                        message:[error localizedDescription]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        picLabel.text = @"Picture Taken";
     }
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-- (void)takePhoto {
-    [picker takePicture];
-}
-
-#pragma mark UIPickerViewDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)p didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    NSLog(@"Picture taken");
-    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
-    UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
-
-    done = YES;
-    [p dismissViewControllerAnimated:YES completion:nil];
-    
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
-    
-    done = YES;
-    [p dismissViewControllerAnimated:YES completion:nil];
-}
-
 @end

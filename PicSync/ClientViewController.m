@@ -104,55 +104,10 @@
         NSLog(@"Sending camera request to %@:%d for %lf seconds", address, port, t);
         [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
         
-        NSTimer *timer = [NSTimer timerWithTimeInterval:t + self.offset
-                                                 target:self
-                                               selector:@selector(takePhoto)
-                                               userInfo:nil
-                                                repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-        NSLog(@"Event scheduled at %lf", [[NSDate date] timeIntervalSince1970]);
-        photoBtn.titleLabel.text = [NSString stringWithFormat:@"Picture scheduled for %lf seconds", t + self.offset];
+        //[self scheduleWithInterval:t + self.offset withLabel:photoBtn.titleLabel];
+        [self scheduleWithInterval:t withLabel:photoBtn.titleLabel];
     }
 }
-
-#pragma mark - photo stuff
-- (void)takePhoto {
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-     
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Device has no camera"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        
-        [alert show];
-        return;
-     }
-     
-    
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.showsCameraControls = NO;
-    [self presentViewController:picker animated:NO completion:nil];
-
-    [picker takePicture];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)p didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    NSLog(@"Picture taken at %lf", [[NSDate date] timeIntervalSince1970]);
-    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
-    UIImageWriteToSavedPhotosAlbum(chosenImage, nil, nil, nil);
-    photoBtn.titleLabel.text = @"Picture taken";
-    [p dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)p {
-    [p dismissViewControllerAnimated:NO completion:nil];
-}
-
 
 #pragma mark - AsyncUdpSocketDelegate
 - (BOOL)onUdpSocket:(AsyncUdpSocket *)sock
@@ -165,15 +120,21 @@
     NSString* newStr = [NSString stringWithUTF8String:[data bytes]];
     double serverTime = [newStr doubleValue];
     double time = [[NSDate date] timeIntervalSince1970];
+//    double sendTime = (time - startTime) / 2;
+//    double clientTime = time - sendTime;
+//    double difference = serverTime - clientTime;
+    
     double sendTime = (time - startTime) / 2;
-    double clientTime = time - sendTime;
-    double difference = serverTime - clientTime;
+    double difference = serverTime - startTime - sendTime;
+    
+    //double difference = sendTime;
+    
     if (serverTime != 0)
     {
-        NSLog(@"Difference #%li: %lf - %lf = %lf", tag, serverTime, clientTime, difference);
+        NSLog(@"Difference #%li: %lf - %lf = %lf", tag, serverTime, startTime, difference);
         logField.text = [logField.text stringByAppendingString:
                          [NSString stringWithFormat:@"Difference #%li: %lf - %lf = %lf\n",
-                          tag, serverTime, clientTime, difference]];
+                          tag, serverTime, startTime, difference]];
         [diffs addObject:[NSNumber numberWithDouble:difference]];
     }
     else
@@ -275,6 +236,8 @@
         [activeTextField resignFirstResponder];
     }
 }
+
+#pragma mark calculations
 
 -(void)calcMeanStdDev
 {

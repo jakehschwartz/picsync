@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "AsyncUdpSocket.h"
+#import "PictureViewController.h"
 
-@interface ClientViewController : UIViewController <AsyncUdpSocketDelegate, 
-                                                    UIGestureRecognizerDelegate,
-                                                    UIImagePickerControllerDelegate,
-                                                    UINavigationControllerDelegate>
+@interface ClientViewController : PictureViewController <AsyncUdpSocketDelegate,
+                                                    UIGestureRecognizerDelegate>
 {
     IBOutlet UITextField *one;
     IBOutlet UITextField *two;

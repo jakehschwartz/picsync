@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "AsyncUdpSocket.h"
+#import "PictureViewController.h"
 
-@interface ServerViewController : UIViewController <AsyncUdpSocketDelegate,
+@interface ServerViewController : PictureViewController <AsyncUdpSocketDelegate,
                                                     UIImagePickerControllerDelegate,
                                                     UINavigationControllerDelegate>
 {

@@ -22,6 +22,10 @@
 		C023DF66183BEC6A0088157A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84F7ACA51837026A00BBDF08 /* Main.storyboard */; };
 		C0490CB818371CDB00D3C170 /* PictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0490CB718371CDB00D3C170 /* PictureViewController.m */; };
 		C04A72E6183C2D3900957DDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F7AC971837026A00BBDF08 /* UIKit.framework */; };
+		C051625A184F9113008EFB10 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0516259184F9113008EFB10 /* CoreMedia.framework */; };
+		C051625C184F911A008EFB10 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C051625B184F911A008EFB10 /* CoreVideo.framework */; };
+		C051625E184F9120008EFB10 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C051625D184F9120008EFB10 /* ImageIO.framework */; };
+		C0516260184F92AA008EFB10 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C051625F184F92AA008EFB10 /* AVFoundation.framework */; };
 		C0720CD9183971FC00322959 /* ClientViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CD6183971FC00322959 /* ClientViewController.m */; };
 		C0720CDA183971FC00322959 /* ServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CD8183971FC00322959 /* ServerViewController.m */; };
 		C0720CDE183972C600322959 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C0720CDD183972C600322959 /* AsyncUdpSocket.m */; };
@@ -59,6 +63,10 @@
 		84F7ACBE1837026A00BBDF08 /* PicSyncTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicSyncTests.m; sourceTree = "<group>"; };
 		C0490CB618371CDB00D3C170 /* PictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureViewController.h; sourceTree = "<group>"; };
 		C0490CB718371CDB00D3C170 /* PictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureViewController.m; sourceTree = "<group>"; };
+		C0516259184F9113008EFB10 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		C051625B184F911A008EFB10 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C051625D184F9120008EFB10 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		C051625F184F92AA008EFB10 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C0720CD5183971FC00322959 /* ClientViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientViewController.h; sourceTree = "<group>"; };
 		C0720CD6183971FC00322959 /* ClientViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientViewController.m; sourceTree = "<group>"; };
 		C0720CD7183971FC00322959 /* ServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerViewController.h; sourceTree = "<group>"; };
@@ -72,6 +80,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0516260184F92AA008EFB10 /* AVFoundation.framework in Frameworks */,
+				C051625E184F9120008EFB10 /* ImageIO.framework in Frameworks */,
+				C051625C184F911A008EFB10 /* CoreVideo.framework in Frameworks */,
+				C051625A184F9113008EFB10 /* CoreMedia.framework in Frameworks */,
 				C04A72E6183C2D3900957DDF /* UIKit.framework in Frameworks */,
 				84F7AC961837026A00BBDF08 /* CoreGraphics.framework in Frameworks */,
 				84F7AC941837026A00BBDF08 /* Foundation.framework in Frameworks */,
@@ -114,6 +126,10 @@
 		84F7AC921837026A00BBDF08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C051625F184F92AA008EFB10 /* AVFoundation.framework */,
+				C051625D184F9120008EFB10 /* ImageIO.framework */,
+				C051625B184F911A008EFB10 /* CoreVideo.framework */,
+				C0516259184F9113008EFB10 /* CoreMedia.framework */,
 				84F7AC931837026A00BBDF08 /* Foundation.framework */,
 				84F7AC951837026A00BBDF08 /* CoreGraphics.framework */,
 				84F7AC971837026A00BBDF08 /* UIKit.framework */,

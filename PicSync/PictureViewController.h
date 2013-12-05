@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <ImageIO/ImageIO.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface PictureViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface PictureViewController : UIViewController //<AVCaptureVideoDataOutputSampleBufferDelegate>
 {
-    UIImagePickerController *picker;
-    bool done;
+    UILabel* picLabel;
+    AVCaptureSession *captureSession;
+    AVCaptureStillImageOutput *stillImageOutput;
 }
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
-@property (nonatomic) double time;
+-(void) scheduleWithInterval:(NSTimeInterval)time withLabel:(UILabel*) l;
 
 @end
