@@ -11,7 +11,7 @@
 #import "PictureViewController.h"
 
 @interface ClientViewController : PictureViewController <AsyncUdpSocketDelegate,
-                                                    UIGestureRecognizerDelegate>
+                                                        UIGestureRecognizerDelegate>
 {
     IBOutlet UITextField *one;
     IBOutlet UITextField *two;
@@ -21,7 +21,6 @@
     IBOutlet UILabel *meanLabel;
     IBOutlet UILabel *stddevLabel;
     IBOutlet UIButton *connectBtn;
-    IBOutlet UIButton *photoBtn;
     
     IBOutlet UITextView *logField;
     
@@ -36,5 +35,4 @@
 @property (nonatomic) double offset;
 
 -(IBAction)connect:(id)sender;
--(IBAction)schedulePhoto:(id)sender;
 @end

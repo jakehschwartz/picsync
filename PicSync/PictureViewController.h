@@ -15,6 +15,7 @@
     UILabel* picLabel;
     AVCaptureSession *captureSession;
     AVCaptureStillImageOutput *stillImageOutput;
+    AVCaptureConnection *videoConnection;
 }
 
 -(void) scheduleWithInterval:(NSTimeInterval)time withLabel:(UILabel*) l;

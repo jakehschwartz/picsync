@@ -11,6 +11,9 @@
 
 @implementation PictureViewController
 
+/**
+ * Initialize the camera and start the av session
+ */
 - (bool)initializeCamera
 {
     // Grab the back-facing camera
@@ -56,39 +59,7 @@
     
     [captureSession startRunning];
     
-    return YES;
-}
-
--(void) scheduleWithInterval:(NSTimeInterval)time withLabel:(UILabel*) l;
-{
-    if (![self initializeCamera])
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"No camera"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
-    
-    picLabel = l;
-    NSTimer *timer = [NSTimer timerWithTimeInterval:time
-                                             target:self
-                                           selector:@selector(takePhoto)
-                                           userInfo:nil
-                                            repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-    NSLog(@"Event scheduled for %lf", [[NSDate date] timeIntervalSince1970] + time);
-    picLabel.text = [NSString stringWithFormat:@"Picture in %lf", time];
-
-}
-
-
--(void) takePhoto
-{
-    NSLog(@"Event occurred for %lf", [[NSDate date] timeIntervalSince1970]);
-    AVCaptureConnection *videoConnection = nil;
+    // Find the video output
     for (AVCaptureConnection *connection in stillImageOutput.connections)
     {
         for (AVCaptureInputPort *port in [connection inputPorts])
@@ -102,23 +73,66 @@
         if (videoConnection) { break; }
     }
     
-    NSLog(@"about to request a capture from: %@ (%@)", stillImageOutput, videoConnection);
+    
+    
+    return YES;
+}
+
+/**
+ * Schedules a photo to be taken in time seconds and will chage the label l
+ */
+-(void) scheduleWithInterval:(NSTimeInterval)time withLabel:(UILabel*) l;
+{
+    // If no camera, print error
+    if (![self initializeCamera])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"No camera"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
+    picLabel = l;
+    
+    // Schedule the event
+    NSTimer *timer = [NSTimer timerWithTimeInterval:time
+                                             target:self
+                                           selector:@selector(takePhoto)
+                                           userInfo:nil
+                                            repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    NSLog(@"Event scheduled for %lf", [[NSDate date] timeIntervalSince1970] + time);
+    picLabel.text = [NSString stringWithFormat:@"Picture in %lf", time];
+
+}
+
+/**
+ * Take the photo and save it to the camera roll
+ */
+-(void) takePhoto
+{
+    NSLog(@"Event occurred for %lf", [[NSDate date] timeIntervalSince1970]);
+    
+    // Take the photo
     [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
-//         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-//         if (exifAttachments)
-//             NSLog(@"attachements: %@", exifAttachments);
-//         else
-//             NSLog(@"no attachments");
-         
+         // Save to camera roll
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
          UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
      }];
+    picLabel.text = @"Picture Taken";
 }
 
+/**
+ * Camera roll save delegate
+ */
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
+    // Print if ther was an error
     if (error != NULL) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                         message:[error localizedDescription]
@@ -128,7 +142,7 @@
         [alert show];
     }
     else {
-        picLabel.text = @"Picture Taken";
+        picLabel.text = @"Saved to camera roll";
     }
 }
 

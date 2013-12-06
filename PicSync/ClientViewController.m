@@ -11,21 +11,19 @@
 
 #define kPort 11111
 
-@interface ClientViewController ()
--(void)dismissKeyboard;
--(void)calcMeanStdDev;
-@end
-
 @implementation ClientViewController
 @synthesize one, two, three, four, connectBtn, meanLabel, stddevLabel;
 
 #pragma mark - UI Actions
+/**
+ * Connect to the server
+ */
 -(IBAction)connect:(id)sender
 {
+    // Make sure an address has been entered
     if (one.text.length == 0 || two.text.length == 0 || 
         three.text.length == 0 || four.text.length == 0)
     {
-        NSLog(@"Nice try");
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                               message:@"Fill in all the fields"
                                                              delegate:nil
@@ -36,77 +34,20 @@
         return;
     }
     
+    // Set up for connection
     connectBtn.enabled = NO;
-    if (diffs == nil)
-    {
-        diffs = [[NSMutableArray alloc] init];
-    }
-    else 
-    {
-        [diffs removeAllObjects];
-    }
+    diffs = [[NSMutableArray alloc] init];
     
+    // Send packet
+    socket = [[AsyncUdpSocket alloc] initWithDelegate:self];
     NSString *address = [NSString stringWithFormat:@"%@.%@.%@.%@", one.text,
                          two.text, three.text, four.text];
-    
-    socket = [[AsyncUdpSocket alloc] initWithDelegate:self];
     NSString * string = @"_";
     UInt16 port = kPort;
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
     startTime = [[NSDate date] timeIntervalSince1970];
     [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
     [socket receiveWithTimeout:-1 tag:0];
-}
-
--(IBAction)schedulePhoto:(id)sender
-{
-    UIAlertView * alert = nil;
-    /*if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                           message:@"Device has no camera"
-                                          delegate:nil
-                                 cancelButtonTitle:@"OK"
-                                 otherButtonTitles: nil];
-    }
-    else{*/
-        // Time picker modal
-        alert = [[UIAlertView alloc] initWithTitle:@"Schedule Photo"
-                                           message:@"Take photo in how many seconds?"
-                                          delegate:self
-                                 cancelButtonTitle:@"Cancel"
-                                 otherButtonTitles:@"Enter", nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    //}
-    
-    [alert show];
-    
-    
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UITextField *textField = [alertView textFieldAtIndex:0];
-    NSString* detailString = textField.text;
-    
-    if ([textField.text length] <= 0 || buttonIndex == 0) {
-        return;
-    }
-    else {
-        double t = [detailString doubleValue];
-        
-        // Send data
-        NSString *address = [NSString stringWithFormat:@"%@.%@.%@.%@", one.text,
-                             two.text, three.text, four.text];
-        UInt16 port = kPort;
-        NSString *time = [NSString stringWithFormat:@"%lf", t];
-        NSData * data = [time dataUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"Sending camera request to %@:%d for %lf seconds", address, port, t);
-        [socket sendData:data toHost:address port:port withTimeout:-1 tag:0];
-        
-        //[self scheduleWithInterval:t + self.offset withLabel:photoBtn.titleLabel];
-        [self scheduleWithInterval:t withLabel:photoBtn.titleLabel];
-    }
 }
 
 #pragma mark - AsyncUdpSocketDelegate
@@ -116,46 +57,56 @@
            fromHost:(NSString *)host
                port:(UInt16)port
 {
-    NSLog(@"--------%@:%li-----------", host, tag);
-    NSString* newStr = [NSString stringWithUTF8String:[data bytes]];
-    double serverTime = [newStr doubleValue];
-    double time = [[NSDate date] timeIntervalSince1970];
-    double sendTime = (time - startTime) / 2;
-    double difference = serverTime - startTime - sendTime;
-    
-    //double difference = sendTime;
-    
-    if (serverTime != 0)
+    // Get the time sent back
+    NSString *time = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    double serverTime = [time doubleValue];
+
+    // If the tag is -1, schedule a photo
+    if (tag == -1)
     {
-        NSLog(@"Difference #%li: %lf - %lf = %lf", tag, serverTime, startTime, difference);
-        logField.text = [logField.text stringByAppendingString:
-                         [NSString stringWithFormat:@"Difference #%li: %lf - %lf = %lf\n",
-                          tag, serverTime, startTime, difference]];
-        [diffs addObject:[NSNumber numberWithDouble:difference]];
+        NSLog(@"Schedule event for %@", [NSDate dateWithTimeIntervalSince1970:serverTime + self.offset]);
+        [self scheduleWithInterval:serverTime - [[NSDate date] timeIntervalSince1970] + self.offset
+                         withLabel:connectBtn.titleLabel];
+        [socket receiveWithTimeout:-1 tag:-1];
     }
+    // otherwise, save the difference
     else
     {
-        NSLog(@"Failed to get reading #%li", tag);
-        logField.text = [logField.text stringByAppendingString:
-                         [NSString stringWithFormat:@"Failed to get reading #%li\n",tag]];
-    }
-    
-    if (++tag < 10)
-    {
-        NSData *data = [NSData dataWithBytes:"_" length:1];
-        startTime = [[NSDate date] timeIntervalSince1970];
-        [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag];
-        [socket receiveWithTimeout:-1 tag:tag];
-    }
-    else
-    {
-        [self calcMeanStdDev];
+        // Do the calculations
+        double time = [[NSDate date] timeIntervalSince1970];
+        double sendTime = (time - startTime) / 2;
+        double difference = time - serverTime - sendTime;
         
-        NSData *data = [NSData dataWithBytes:"!" length:1];
-        [sock sendData:data toHost:host port:port withTimeout:-1 tag:tag];
+        // Log the difference
+        if (serverTime != 0)
+        {
+            logField.text = [logField.text stringByAppendingString:
+                             [NSString stringWithFormat:@"Difference #%li: %lf - %lf = %lf\n",
+                              tag, serverTime, startTime, difference]];
+            [diffs addObject:[NSNumber numberWithDouble:difference]];
+        }
+        else
+        {
+            logField.text = [logField.text stringByAppendingString:
+                             [NSString stringWithFormat:@"Failed to get reading #%li\n",tag]];
+        }
         
-        connectBtn.enabled = YES;
-        photoBtn.enabled = YES;
+        // Send next request or wait for picture request
+        if (++tag < 10)
+        {
+            NSData *data = [NSData dataWithBytes:"_" length:1];
+            startTime = [[NSDate date] timeIntervalSince1970];
+            [socket sendData:data toHost:host port:port withTimeout:-1 tag:tag];
+            [socket receiveWithTimeout:-1 tag:tag];
+        }
+        else
+        {
+            [self calcMeanStdDev];
+            
+            NSData *data = [NSData dataWithBytes:"!" length:1];
+            [socket sendData:data toHost:host port:port withTimeout:-1 tag:tag];
+            [socket receiveWithTimeout:-1 tag:-1];
+        }
     }
 
     
@@ -258,7 +209,6 @@
     }
     stddev /= (devs.count - 1);
     self.stddevLabel.text = [NSString stringWithFormat:@"%0.5lf", sqrt(stddev)];
-    NSLog(@"Calced: %lf : %lf", mean, stddev);
     
     self.offset = mean;
 }
