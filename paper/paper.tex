@@ -24,7 +24,9 @@ on multiple smartphones or other mobile devices.  When working with two mobile
 devices, one will act as the time source and the other will then synchronize to
 it by calculating an offset. In this paper, a basic network time synchronization
 technique will be used to schedule two mobile devices to take a picture at the
-same time. RESULT SENTENCE
+same time, according to one of the devices. We were successful in taking photos
+on two iPhones hundredths of a second apart. This difference may be even less,
+we need to find a more accurate testing tool.
 \end{abstract}
 
 \section{Introduction}
@@ -49,8 +51,6 @@ device take a picture of the same clock. To take the experiment a step further,
 the scheduling of events could also take place across different platforms or run
 off different wireless protocols like TCP or Bluetooth.
 
-% Paragraph talking about time syhcnornization NTP?:
-
 To calculate the offset, a formula similar to the one used in NTP will be used.
 This involves taking the time three on three occasions. The client devices
 checks its time when it sends the request packet to the service device. This
@@ -71,51 +71,42 @@ application has one device declare itself the server. This device then waits for
 a client device to connect. Over a UDP connection, the server then sends the
 device's time in milliseconds since the Unix Epoch several times, which the
 client uses to get an average offset from its time. Once this offset is
-calculated, the user tells the client device when to take a picture. The client
-tells the server to take a picture at the same point in time, using the average
-offset that was calculated. To determine how far off the picture event take
-place, the phones are positioned to take a picture of a digital clock.
+calculated, the user tells the server device when to take a picture. The server
+device then tells the client when it wants the picture taken, and it calculated
+when it should take the picture using the offset. To determine how far off the
+picture event take place, the phones are positioned to take a picture of a
+digital stopwatch.
 
-%SCREEN SHOTS OF PICTURES
+\begin{figure}
+{\resizebox{3.2in}{!}{\includegraphics{experiment/jake.png}}}
+\caption{Picture taken from ``Server'' phone}
+\label{fig:pic0}
+\end{figure}
 
-% \begin{figure}
-% {\resizebox{3.2in}{!}{\includegraphics{experiment/out-0.png}}}
-% \caption{Download times at 0 Kbps}
-% \label{fig:graph0}
-% \end{figure}
+\begin{figure}
+{\resizebox{3.2in}{!}{\includegraphics{experiment/radim.png}}}
+\caption{Picture taken from ``Client'' phone}
+\label{fig:pic1}
+\end{figure}
 
 \section{Conclusion}
 
-*These times were obtained on a laptop using a wireless network with little to 
-no other traffic at the same time. Based on the times, it is clear that in this
-setting there would be no need for downshifting. As seen in the Figures 1-5,
-most of the times occur in under a second. Interestingly, the times for all of 
-the Akumai segments with bandwidths that actually contain video download faster 
-than the Azuki segments. This could happen for a number of reasons, closer 
-physical location being one of them, but this is not the focus of the 
-experiment.
+This experiment was run between two iPhone 5 running iOS 7. As shown in figures
+1 and 2, the time between the pictures was only four hundredths of a second, or
+four nanoseconds. For most applications, this delay is acceptable. The
+milliseconds in the figure 1 were not visible until the photo was manipulated,
+leaving us to believe that this test was not as accurate as possible. We used an
+online stopwatch, which does not refresh the screen faster enough to get an
+exact measurement. A mechanical stopwatch or a pocket watch is required to get an
+accurate measurement of the milliseconds between pictures.
 
-This experiment was run between two iPhone 5 running iOS 7. MORE.
-
-There are several expansions to this project. One next step is to port the 
-application to other mobile operating systems to find any other potential 
+There are several expansions to this project. One next step is to port the
+application to other mobile operating systems to find any other potential
 pitfalls that would cause the offset and the timing to be incorrect. Connecting
 over Bluetooth would eliminate the 'ugliness' of having to enter an IP address
 to connect. To use more than two devices, a multicast protocol could be used and
 one of the mobile devices would act as a server or an actual dedicated server
 could be used. The latter would also remove the need to enter an IP address,
 because it would be static. 
-
-\begin{thebibliography}{1}
-
-\bibitem{rate}
-% C. Lui, I. Bouazizi, and M. Gabbouj, ``\emph{Rate Adaptation for Adaptive HTTP
-% Streamimg},'' ACM MMSys'11, February 2011.
-
-% \bibitem{cos}
-% K. Ma, and R. Bartos, ``\emph{CoS Enforcement for HTTP Adaptive Streaming},'' 
-% IEEE GC'12 Workshop, July 2003.
-
-\end{thebibliography}
 
 \end{document}
